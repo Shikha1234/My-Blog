@@ -1,0 +1,63 @@
+ORM 
+
+Object Relational Mapper
+
+Allows us to access our database easy In Object oriented way.
+Can use different databases without chaning out python code 
+
+We are using different databases.
+
+SQLLite for Dvelopment 
+PostGreg
+
+
+In SQLAlchemy
+
+Database structure   will be like Classe  for hearing these classes we will call model.
+
+Each class will be a table in  Database
+
+
+
+So here we are creatingg User Model And each model is a class each class has its own table.
+
+
+backref= 
+Lazy = find when sql alchemy loads the data from the database
+As necessary inone go.
+
+
+ Posts is == post is an relationship not a column.
+It will provide all the post that user has created.
+
+UserID - is going be the id of user who authoured the post.
+
+
+
+
+
+
+=============================================================================================
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship('Post' , backref='author', lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}' , '{self.image_file}')"
+
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id =db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False )
+
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
